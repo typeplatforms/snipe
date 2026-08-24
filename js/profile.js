@@ -30,7 +30,6 @@ if (!requested) {
   nameEl.textContent = 'Profile not found';
   bioEl.textContent = 'No profile link was provided.';
 } else {
-  // The username is only a legacy alias. The canonical public URL is always profile_slug.
   const slugResult = await supabase.from('profiles').select('*').ilike('profile_slug', requested).maybeSingle();
   let profile = slugResult.data;
   let matchedByUsername = false;
@@ -45,17 +44,18 @@ if (!requested) {
     nameEl.textContent = 'Profile not found';
     bioEl.textContent = 'This Snipe profile does not exist.';
   } else if (matchedByUsername && profile.profile_slug && profile.profile_slug.toLowerCase() !== requested.toLowerCase()) {
-    // Old username URLs permanently point to the user's current custom URL.
-    const canonicalPath = `/${encodeURIComponent(profile.profile_slug)}`;
-    if (location.pathname !== canonicalPath) location.replace(canonicalPath);
+    // The username is an alias only. Redirect to the canonical custom slug.
+    // Do NOT encode the whole slug: characters such as $ should remain visible in the URL.
+    const canonicalPath = `/${profile.profile_slug}`;
+    if (decodeURIComponent(location.pathname) !== canonicalPath) location.replace(canonicalPath);
   } else {
     document.title = `${profile.display_name || profile.username} — Snipe`;
     nameEl.textContent = profile.display_name || profile.username;
     applyNameEffect(nameEl, profile.display_name_effect);
     document.querySelector('#profile-username').textContent = `@${profile.username}`;
 
-    if (profile.background_url) { const bg = safeImage(profile.background_url); if (bg) pageEl.style.backgroundImage = `url("${bg.replaceAll('"','%22')}")`; }
-    if (profile.banner_url) { const banner = safeImage(profile.banner_url); if (banner) bannerEl.style.backgroundImage = `url("${banner.replaceAll('"','%22')}")`; }
+    if (profile.background_url) { const bg = safeImage(profile.background_url); if (bg) pageEl.style.backgroundImage = `url(\"${bg.replaceAll('\\"','%22')}\")`; }
+    if (profile.banner_url) { const banner = safeImage(profile.banner_url); if (banner) bannerEl.style.backgroundImage = `url(\"${banner.replaceAll('\\"','%22')}\")`; }
     else bannerEl.style.backgroundImage = 'linear-gradient(135deg,#191d22,#090b0f 58%,#161a20)';
 
     const avatar = document.querySelector('#profile-avatar');
