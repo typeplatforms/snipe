@@ -1,0 +1,5 @@
+import { supabase, getSession, touchActivity } from './supabase.js';
+const form=document.querySelector('#login-form'),email=document.querySelector('#email'),password=document.querySelector('#password'),button=document.querySelector('#submit'),message=document.querySelector('#message');
+function show(text,type=''){message.textContent=text;message.className=`auth-message show ${type}`;}
+const session=await getSession().catch(()=>null);if(session) window.location.replace('dashboard.html');
+form.addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;button.textContent='Logging in…';message.className='auth-message';try{const{data,error}=await supabase.auth.signInWithPassword({email:email.value.trim(),password:password.value});if(error)throw error;await touchActivity();window.location.replace('dashboard.html')}catch(error){show(error.message||'Unable to log in.','error');button.disabled=false;button.textContent='Log in'}});
