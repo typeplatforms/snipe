@@ -14,10 +14,13 @@ for (const key of fields) $(key).value = profile[key] || '';
 $('nav-avatar').textContent = (profile.display_name || profile.username || '?').slice(0,1).toUpperCase();
 $('public-nav').href = `profile.html?u=${encodeURIComponent(profile.username)}`;
 
-const changesUsed = Number(profile.username_change_count || 0);
-const changesLeft = Math.max(0, 2 - changesUsed);
-$('username-limit').textContent = `${changesLeft} username change${changesLeft === 1 ? '' : 's'} remaining`;
-if (changesLeft === 0) $('username').disabled = true;
+function updateUsernameLimit(count) {
+  const used = Number(count || 0);
+  const left = Math.max(0, 2 - used);
+  $('username-limit').textContent = `${left} username change${left === 1 ? '' : 's'} remaining`;
+  $('username').disabled = left === 0;
+}
+updateUsernameLimit(profile.username_change_count);
 
 $('logout').addEventListener('click', async () => {
   await supabase.auth.signOut();
@@ -46,17 +49,22 @@ $('settings-form').addEventListener('submit', async event => {
 
   try {
     const requestedUsername = $('username').value.trim();
-    if (!/^[A-Za-z0-9_]{3,32}$/.test(requestedUsername)) {
-      throw new Error('Username must be 3–32 characters and use only letters, numbers, or underscores.');
-    }
+    const currentUsername = String(profile.username || '');
+    if (!/^[A-Za-z0-9_]{3,32}$/.test(requestedUsername)) throw new Error('Username must be 3–32 characters and use only letters, numbers, or underscores.');
 
-    if (requestedUsername.toLowerCase() !== String(profile.username || '').toLowerCase()) {
-      const { error: usernameError } = await supabase.rpc('change_username', { new_username: requestedUsername });
+    let finalUsername = currentUsername;
+    let changesUsed = Number(profile.username_change_count || 0);
+
+    if (requestedUsername.toLowerCase() !== currentUsername.toLowerCase()) {
+      const { data: result, error: usernameError } = await supabase.rpc('change_username', { new_username: requestedUsername });
       if (usernameError) throw usernameError;
+      finalUsername = result?.username || requestedUsername.toLowerCase();
+      changesUsed = Number(result?.changes_used ?? changesUsed + 1);
+      updateUsernameLimit(changesUsed);
     }
 
     const updates = {
-      display_name: $('display_name').value.trim() || profile.username,
+      display_name: $('display_name').value.trim() || finalUsername,
       bio: $('bio').value.trim() || '',
       discord_url: $('discord_url').value.trim() || null,
       github_url: $('github_url').value.trim() || null,
@@ -79,10 +87,12 @@ $('settings-form').addEventListener('submit', async event => {
     if (saveError) throw saveError;
 
     await touchActivity();
-    status.textContent = 'Saved successfully.';
-    setTimeout(() => window.location.reload(), 500);
+    $('public-nav').href = `profile.html?u=${encodeURIComponent(finalUsername)}`;
+    status.textContent = 'Changes saved successfully.';
+    setTimeout(() => window.location.reload(), 700);
   } catch (error) {
-    status.textContent = error.message || 'Could not save changes.';
+    console.error(error);
+    status.textContent = error?.message || 'Could not save changes.';
   } finally {
     button.disabled = false;
     button.textContent = 'Save changes';
