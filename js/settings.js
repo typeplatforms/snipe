@@ -6,6 +6,7 @@ await touchActivity();
 
 const $ = id => document.querySelector(`#${id}`);
 const fields = ['display_name','bio','discord_url','github_url','youtube_url','twitter_url','instagram_url','tiktok_url'];
+const allowedEffects = new Set(['none','glow','rainbow','shimmer','pulse','fire','ice','neon','shadow','gradient']);
 const { data: profile, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
 if (error) throw error;
 
@@ -13,6 +14,20 @@ $('username').value = profile.username || '';
 for (const key of fields) $(key).value = profile[key] || '';
 $('nav-avatar').textContent = (profile.display_name || profile.username || '?').slice(0,1).toUpperCase();
 $('public-nav').href = `profile.html?u=${encodeURIComponent(profile.username)}`;
+
+let selectedEffect = allowedEffects.has(profile.display_name_effect) ? profile.display_name_effect : 'none';
+function updateEffectSelection() {
+  document.querySelectorAll('.effect-option').forEach(button => {
+    button.classList.toggle('active', button.dataset.effect === selectedEffect);
+  });
+}
+document.querySelectorAll('.effect-option').forEach(button => {
+  button.addEventListener('click', () => {
+    selectedEffect = button.dataset.effect;
+    updateEffectSelection();
+  });
+});
+updateEffectSelection();
 
 function updateUsernameLimit(count) {
   const used = Number(count || 0);
@@ -65,6 +80,7 @@ $('settings-form').addEventListener('submit', async event => {
 
     const updates = {
       display_name: $('display_name').value.trim() || finalUsername,
+      display_name_effect: selectedEffect,
       bio: $('bio').value.trim() || '',
       discord_url: $('discord_url').value.trim() || null,
       github_url: $('github_url').value.trim() || null,
