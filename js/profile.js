@@ -2,7 +2,6 @@ import { supabase } from './supabase.js';
 
 const params = new URLSearchParams(location.search);
 let requested = params.get('u');
-
 if (!requested) {
   const path = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, '');
   const parts = path.split('/').filter(Boolean);
@@ -22,6 +21,16 @@ function safeImage(url) { try { return new URL(url, location.href).href; } catch
 function applyNameEffect(element, effect) {
   for (const name of allowedEffects) element.classList.remove(`name-effect-${name}`);
   element.classList.add(`name-effect-${allowedEffects.has(effect) ? effect : 'none'}`);
+}
+function setFavicon(url) {
+  if (!url) return;
+  const existing = document.querySelectorAll('link[rel="icon"],link[rel="shortcut icon"]');
+  existing.forEach(link => link.remove());
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/png';
+  link.href = safeImage(url);
+  document.head.appendChild(link);
 }
 
 if (!requested) {
@@ -50,11 +59,13 @@ if (!requested) {
     applyNameEffect(nameEl, profile.display_name_effect);
     document.querySelector('#profile-username').textContent = `@${profile.username}`;
 
+    const customLinks = profile.custom_links && typeof profile.custom_links === 'object' ? profile.custom_links : {};
+    setFavicon(customLinks.favicon_url);
+
     if (profile.background_url) { const bg = safeImage(profile.background_url); if (bg) pageEl.style.backgroundImage = `url(\"${bg.replaceAll('\\"','%22')}\")`; }
     if (profile.banner_url) { const banner = safeImage(profile.banner_url); if (banner) bannerEl.style.backgroundImage = `url(\"${banner.replaceAll('\\"','%22')}\")`; }
     else bannerEl.style.backgroundImage = 'linear-gradient(135deg,#191d22,#090b0f 58%,#161a20)';
 
-    // The profile avatar is ONLY the user's uploaded avatar. The Snipe logo is never used here.
     const avatar = document.querySelector('#profile-avatar');
     avatar.replaceChildren();
     if (profile.avatar_url) {
@@ -63,9 +74,7 @@ if (!requested) {
         const img = document.createElement('img');
         img.src = src;
         img.alt = `${profile.display_name || profile.username} avatar`;
-        img.loading = 'eager';
-        img.decoding = 'async';
-        img.draggable = false;
+        img.loading = 'eager'; img.decoding = 'async'; img.draggable = false;
         avatar.appendChild(img);
       } else avatar.textContent = (profile.display_name || profile.username).slice(0, 1).toUpperCase();
     } else avatar.textContent = (profile.display_name || profile.username).slice(0, 1).toUpperCase();
@@ -74,8 +83,7 @@ if (!requested) {
     document.querySelector('#views').textContent = `${profile.profile_views ?? 0} views`;
 
     const socials = [['Discord',profile.discord_url],['GitHub',profile.github_url],['YouTube',profile.youtube_url],['Twitter / X',profile.twitter_url],['Instagram',profile.instagram_url],['TikTok',profile.tiktok_url]];
-    const links = document.querySelector('#links');
-    links.replaceChildren();
+    const links = document.querySelector('#links'); links.replaceChildren();
     for (const [name,url] of socials) {
       if (!url) continue;
       const a = document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent=name;
@@ -84,8 +92,7 @@ if (!requested) {
     }
 
     const { data: badges } = await supabase.from('profile_badges').select('awarded_at,badges(name,description,icon_url)').eq('profile_id', profile.id);
-    const badgeBox = document.querySelector('#profile-badges');
-    badgeBox.replaceChildren();
+    const badgeBox = document.querySelector('#profile-badges'); badgeBox.replaceChildren();
     for (const row of badges || []) {
       if (!row.badges) continue;
       const badge = document.createElement('span'); badge.className='profile-badge';
