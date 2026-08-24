@@ -1,47 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#08090d">
-  <link rel="icon" type="image/png" href="assets/snipe-logo.png">
-  <title>Settings — Snipe</title>
-  <link rel="stylesheet" href="app.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08090d"><link rel="icon" type="image/png" href="assets/snipe-logo.png">
+<title>Settings — Snipe</title><link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="app-nav"><div class="app-nav-inner">
-      <a class="brand" href="index.html" aria-label="Snipe home"><img src="assets/snipe-logo.png" alt="Snipe" style="width:29px;height:29px;object-fit:contain;border-radius:8px;"><span>SNIPE</span></a>
-      <nav class="app-nav-links"><a href="dashboard.html">Dashboard</a><a class="active" href="settings.html">Settings</a><a id="public-nav" href="profile.html">My profile</a></nav>
-      <div class="user-menu"><div id="nav-avatar" class="mini-avatar">?</div><button id="logout" class="logout">Log out</button></div>
-    </div></header>
-    <main class="app-main">
-      <div class="page-head"><div><h1>Settings</h1><p>Control the identity people see on your Snipe profile.</p></div></div>
-      <section class="panel">
-        <h2>Profile</h2><p class="panel-desc">Your username is public. Keep your profile recognizable and easy to share.</p>
-        <form id="settings-form">
-          <div class="form-grid">
-            <label class="field-app"><span>Username</span><input id="username" readonly></label>
-            <label class="field-app"><span>Display name</span><input id="display_name" maxlength="64" placeholder="Your display name"></label>
-            <label class="field-app full"><span>Bio</span><textarea id="bio" maxlength="500" placeholder="Tell people a little about yourself."></textarea></label>
-            <label class="field-app"><span>Discord</span><input id="discord_url" type="url" placeholder="https://discord.com/users/..."></label>
-            <label class="field-app"><span>GitHub</span><input id="github_url" type="url" placeholder="https://github.com/..."></label>
-            <label class="field-app"><span>YouTube</span><input id="youtube_url" type="url" placeholder="https://youtube.com/..."></label>
-            <label class="field-app"><span>Twitter / X</span><input id="twitter_url" type="url" placeholder="https://x.com/..."></label>
-            <label class="field-app"><span>Instagram</span><input id="instagram_url" type="url" placeholder="https://instagram.com/..."></label>
-            <label class="field-app"><span>TikTok</span><input id="tiktok_url" type="url" placeholder="https://tiktok.com/@..."></label>
-          </div>
-          <div class="media-grid">
-            <label class="media-upload"><span>Avatar</span><small>PNG, JPG, WEBP · max 5 MB</small><input id="avatar_file" type="file" accept="image/png,image/jpeg,image/webp"></label>
-            <label class="media-upload"><span>Banner</span><small>PNG, JPG, WEBP · max 8 MB</small><input id="banner_file" type="file" accept="image/png,image/jpeg,image/webp"></label>
-            <label class="media-upload"><span>Background</span><small>PNG, JPG, WEBP · max 8 MB</small><input id="background_file" type="file" accept="image/png,image/jpeg,image/webp"></label>
-          </div>
-          <button class="save-btn" id="save" type="submit">Save changes</button>
-          <div id="status" class="status"></div>
-        </form>
-      </section>
-    </main>
-  </div>
-  <script type="module" src="./js/settings.js"></script>
-</body>
-</html>
+<div class="app-shell">
+<header class="app-nav"><div class="app-nav-inner">
+<a class="brand" href="index.html"><img src="assets/snipe-logo.png" alt="Snipe"><span>SNIPE</span></a>
+<nav class="app-nav-links"><a href="dashboard.html">Dashboard</a><a class="active" href="settings.html">Settings</a><a id="public-nav" href="profile.html">My profile</a></nav>
+<div class="user-menu"><div id="nav-avatar" class="mini-avatar">?</div><button id="logout" class="logout">Log out</button></div>
+</div></header>
+<main class="app-main">
+<div class="page-head"><h1>Settings</h1><p>Manage the identity people see on your Snipe profile.</p></div>
+<section class="panel">
+<h2>Profile identity</h2><p class="panel-desc">Your username is your public Snipe identity. You can change it twice.</p>
+<form id="settings-form">
+<div class="username-box">
+<label class="field-app"><span>Username</span><input id="username" maxlength="32" autocomplete="off" spellcheck="false"></label>
+<div class="username-meta"><span id="username-limit">2 username changes remaining</span><span>3–32 characters · letters, numbers, underscores</span></div>
+</div>
+<div class="form-grid">
+<label class="field-app"><span>Display name</span><input id="display_name" maxlength="64" placeholder="Your display name"></label>
+<label class="field-app"><span>Bio</span><input id="bio" maxlength="500" placeholder="Tell people about yourself."></label>
+<label class="field-app"><span>Discord</span><input id="discord_url" type="url" placeholder="https://discord.com/users/..."></label>
+<label class="field-app"><span>GitHub</span><input id="github_url" type="url" placeholder="https://github.com/..."></label>
+<label class="field-app"><span>YouTube</span><input id="youtube_url" type="url" placeholder="https://youtube.com/..."></label>
+<label class="field-app"><span>Twitter / X</span><input id="twitter_url" type="url" placeholder="https://x.com/..."></label>
+<label class="field-app"><span>Instagram</span><input id="instagram_url" type="url" placeholder="https://instagram.com/..."></label>
+<label class="field-app"><span>TikTok</span><input id="tiktok_url" type="url" placeholder="https://tiktok.com/@..."></label>
+</div>
+<div class="media-grid">
+<label class="media-upload"><span>Avatar</span><small>PNG, JPG, WEBP · max 5 MB</small><input id="avatar_file" type="file" accept="image/png,image/jpeg,image/webp"></label>
+<label class="media-upload"><span>Banner</span><small>PNG, JPG, WEBP · max 8 MB</small><input id="banner_file" type="file" accept="image/png,image/jpeg,image/webp"></label>
+<label class="media-upload"><span>Background</span><small>PNG, JPG, WEBP · max 8 MB</small><input id="background_file" type="file" accept="image/png,image/jpeg,image/webp"></label>
+</div>
+<button class="save-btn" id="save" type="submit">Save changes</button>
+<div id="status" class="status"></div>
+</form></section></main></div>
+<script type="module" src="./js/settings.js"></script>
+</body></html>
