@@ -19,11 +19,9 @@ const bannerEl = document.querySelector('#profile-banner');
 const allowedEffects = new Set(['none','glow','rainbow','shimmer','pulse','fire','ice','neon','shadow','gradient']);
 
 function safeImage(url) { try { return new URL(url, location.href).href; } catch { return ''; } }
-
 function applyNameEffect(element, effect) {
   for (const name of allowedEffects) element.classList.remove(`name-effect-${name}`);
-  const cleanEffect = allowedEffects.has(effect) ? effect : 'none';
-  element.classList.add(`name-effect-${cleanEffect}`);
+  element.classList.add(`name-effect-${allowedEffects.has(effect) ? effect : 'none'}`);
 }
 
 if (!requested) {
@@ -44,8 +42,6 @@ if (!requested) {
     nameEl.textContent = 'Profile not found';
     bioEl.textContent = 'This Snipe profile does not exist.';
   } else if (matchedByUsername && profile.profile_slug && profile.profile_slug.toLowerCase() !== requested.toLowerCase()) {
-    // The username is an alias only. Redirect to the canonical custom slug.
-    // Do NOT encode the whole slug: characters such as $ should remain visible in the URL.
     const canonicalPath = `/${profile.profile_slug}`;
     if (decodeURIComponent(location.pathname) !== canonicalPath) location.replace(canonicalPath);
   } else {
@@ -58,6 +54,7 @@ if (!requested) {
     if (profile.banner_url) { const banner = safeImage(profile.banner_url); if (banner) bannerEl.style.backgroundImage = `url(\"${banner.replaceAll('\\"','%22')}\")`; }
     else bannerEl.style.backgroundImage = 'linear-gradient(135deg,#191d22,#090b0f 58%,#161a20)';
 
+    // The profile avatar is ONLY the user's uploaded avatar. The Snipe logo is never used here.
     const avatar = document.querySelector('#profile-avatar');
     avatar.replaceChildren();
     if (profile.avatar_url) {
