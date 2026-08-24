@@ -18,6 +18,11 @@ body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); f
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 
+/* Prevent accidental text selection across the interface. Inputs remain selectable/editable. */
+body, body * { -webkit-user-select: none; user-select: none; }
+input, textarea, select, [contenteditable="true"] { -webkit-user-select: text; user-select: text; }
+img, svg { -webkit-user-drag: none; user-drag: none; }
+
 .site-shell { position: relative; min-height: 100vh; overflow: hidden; }
 .ambient { position: absolute; width: 560px; height: 560px; border-radius: 50%; filter: blur(130px); pointer-events: none; background: var(--accent); opacity: .045; }
 .ambient-a { top: -300px; right: -180px; }
