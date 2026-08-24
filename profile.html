@@ -17,8 +17,8 @@
     .profile-content{position:relative;padding:0 34px 34px}
     .profile-brand{display:flex;align-items:center;justify-content:center;gap:9px;margin:0 0 18px;color:#f5f6f8;font:700 15px 'Space Grotesk',sans-serif;letter-spacing:.16em}
     .profile-brand img{width:32px;height:32px;object-fit:contain;border-radius:8px}
-    .public-avatar{width:104px;height:104px;margin:-52px auto 0;position:relative;z-index:2;display:grid;place-items:center;border:5px solid #0b0d11;border-radius:50%;background:#15181e;color:#d7ff4f;font:700 32px 'Space Grotesk',sans-serif;overflow:hidden;box-shadow:0 10px 35px rgba(0,0,0,.4)}
-    .public-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .public-avatar{width:104px;height:104px;margin:-52px auto 0;position:relative;z-index:2;display:grid;place-items:center;border:5px solid #0b0d11;border-radius:50%;background:#15181e;color:#d7ff4f;font:700 32px 'Space Grotesk',sans-serif;overflow:hidden;isolation:isolate;clip-path:circle(50%);box-shadow:0 10px 35px rgba(0,0,0,.4)}
+    .public-avatar img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;max-height:100%;min-width:0;min-height:0;object-fit:cover;object-position:center;display:block;border:0;border-radius:50%;overflow:hidden;clip-path:circle(50%);-webkit-clip-path:circle(50%);pointer-events:none;user-select:none;-webkit-user-drag:none}
     #profile-name{font:700 38px 'Space Grotesk',sans-serif;letter-spacing:-.055em;margin:17px 0 3px;color:#f5f6f8}
     #profile-username{color:#777d88;font-size:12px}
     #profile-badges{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:7px;margin:18px 0}
@@ -32,7 +32,7 @@
     #links a:hover{transform:translateY(-2px);border-color:rgba(215,255,79,.22)!important;background:rgba(215,255,79,.035)!important;color:#f5f6f8!important}
     #views{margin-top:22px;color:#656b76;font-size:10px}
     .profile-back{display:inline-block;margin-top:24px;color:#777d88;font-size:11px;transition:color .18s ease}.profile-back:hover{color:#d7ff4f}
-    @media(max-width:600px){.profile-page{padding:20px 12px;background-attachment:scroll}.profile-content{padding:0 18px 26px}.profile-card-public{border-radius:18px}.profile-banner-public{height:125px}#profile-name{font-size:31px}}
+    @media(max-width:600px){.profile-page{padding:20px 12px;background-attachment:scroll}.profile-content{padding:0 18px 26px}.profile-card-public{border-radius:18px}.profile-banner-public{height:125px}#profile-name{font-size:31px}.public-avatar{width:92px;height:92px}}
   </style>
 </head>
 <body>
