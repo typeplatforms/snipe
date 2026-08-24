@@ -1,14 +1,21 @@
 import { supabase } from './supabase.js';
 
 const params = new URLSearchParams(location.search);
-let username = params.get('u');
+let requested = params.get('u');
 
-if (!username) {
+if (!requested) {
   const path = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, '');
   const parts = path.split('/').filter(Boolean);
-  username = parts.length ? parts[parts.length - 1] : null;
-  if (['index.html','profile.html','login.html','signup.html','dashboard.html','settings.html','forgot-password.html','reset-password.html'].includes(username?.toLowerCase())) username = null;
+  requested = parts.length ? parts[parts.length - 1] : null;
 }
+
+const reserved = new Set([
+  'index.html','profile.html','login.html','signup.html','dashboard.html',
+  'settings.html','forgot-password.html','reset-password.html','404.html',
+  'assets','js','css','snipe'
+]);
+
+if (requested && reserved.has(requested.toLowerCase())) requested = null;
 
 const nameEl = document.querySelector('#profile-name');
 const bioEl = document.querySelector('#profile-bio');
@@ -19,13 +26,34 @@ function safeImage(url) {
   try { return new URL(url, location.href).href; } catch { return ''; }
 }
 
-if (!username) {
+if (!requested) {
   nameEl.textContent = 'Profile not found';
-  bioEl.textContent = 'No username was provided.';
+  bioEl.textContent = 'No profile link was provided.';
 } else {
-  const { data: profile, error } = await supabase.from('profiles').select('*').ilike('username', username).maybeSingle();
+  // Clean URLs use profile_slug. The old ?u= format still works as a fallback.
+  const slugResult = await supabase
+    .from('profiles')
+    .select('*')
+    .ilike('profile_slug', requested)
+    .maybeSingle();
 
-  if (error || !profile) {
+  let profile = slugResult.data;
+
+  // Backwards compatibility for profiles that have not yet received a slug.
+  if (!profile && requested) {
+    const fallback = await supabase
+      .from('profiles')
+      .select('*')
+      .ilike('username', requested)
+      .maybeSingle();
+    profile = fallback.data;
+  }
+
+  if (slugResult.error && !profile) {
+    console.error(slugResult.error);
+  }
+
+  if (!profile) {
     nameEl.textContent = 'Profile not found';
     bioEl.textContent = 'This Snipe profile does not exist.';
   } else {
@@ -33,13 +61,11 @@ if (!username) {
     nameEl.textContent = profile.display_name || profile.username;
     document.querySelector('#profile-username').textContent = `@${profile.username}`;
 
-    // Background: fills the entire page while preserving the image's proportions.
     if (profile.background_url) {
       const bg = safeImage(profile.background_url);
       if (bg) pageEl.style.backgroundImage = `url("${bg.replaceAll('"','%22')}")`;
     }
 
-    // Banner: full-width profile banner, cropped cleanly with cover.
     if (profile.banner_url) {
       const banner = safeImage(profile.banner_url);
       if (banner) bannerEl.style.backgroundImage = `url("${banner.replaceAll('"','%22')}")`;
@@ -47,7 +73,6 @@ if (!username) {
       bannerEl.style.backgroundImage = 'linear-gradient(135deg,#191d22,#090b0f 58%,#161a20)';
     }
 
-    // Avatar: always constrained to its circular frame.
     const avatar = document.querySelector('#profile-avatar');
     if (profile.avatar_url) {
       const src = safeImage(profile.avatar_url);
@@ -83,31 +108,39 @@ if (!username) {
       links.appendChild(a);
     }
 
-    const { data: badges } = await supabase.from('profile_badges').select('awarded_at,badges(name,description,icon_url)').eq('profile_id', profile.id);
-    const badgeBox = document.querySelector('#profile-badges');
+    // Badges are read-only on the public site. There is intentionally no
+    // user-facing badge awarding UI. Awarding is an admin/Supabase operation.
+    const { data: badges, error: badgeError } = await supabase
+      .from('profile_badges')
+      .select('awarded_at,badges(name,description,icon_url)')
+      .eq('profile_id', profile.id);
 
+    if (badgeError) console.error(badgeError);
+
+    const badgeBox = document.querySelector('#profile-badges');
     for (const row of badges || []) {
+      if (!row.badges) continue;
+
       const badge = document.createElement('span');
       badge.className = 'profile-badge';
-      const badgeName = row.badges?.name || 'Badge';
+      const badgeName = row.badges.name || 'Badge';
       badge.tabIndex = 0;
       badge.setAttribute('aria-label', badgeName);
 
-      const tooltip = document.createElement('span');
-      tooltip.textContent = badgeName;
-      badge.appendChild(tooltip);
-
-      if (row.badges?.icon_url) {
+      if (row.badges.icon_url) {
         const img = document.createElement('img');
         img.src = row.badges.icon_url;
         img.alt = '';
         img.loading = 'lazy';
         img.decoding = 'async';
-        badge.insertBefore(img, tooltip);
+        badge.appendChild(img);
       } else {
-        const mark = document.createTextNode('✦');
-        badge.insertBefore(mark, tooltip);
+        badge.appendChild(document.createTextNode('✦'));
       }
+
+      const tooltip = document.createElement('span');
+      tooltip.textContent = badgeName;
+      badge.appendChild(tooltip);
       badgeBox.appendChild(badge);
     }
 
