@@ -3,112 +3,118 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#08090d">
+  <meta name="theme-color" content="#07080b">
   <meta name="description" content="Snipe — create a profile that's yours.">
   <link rel="icon" type="image/png" href="assets/snipe-logo.png">
   <title>Snipe — Your profile, your identity</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="site-shell">
-    <div class="ambient ambient-a"></div>
-    <div class="ambient ambient-b"></div>
+  <header class="nav-wrap">
+    <nav class="nav container">
+      <a class="brand" href="index.html" aria-label="Snipe home">
+        <img src="assets/snipe-logo.png" alt="Snipe logo">
+        <span>SNIPE</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#showcase">Profiles</a>
+        <a href="login.html">Log in</a>
+        <a class="nav-cta" href="signup.html">Get started</a>
+      </div>
+    </nav>
+  </header>
 
-    <header class="nav-wrap">
-      <nav class="nav">
-        <a class="brand" href="index.html" aria-label="Snipe home">
-          <img src="assets/snipe-logo.png" alt="Snipe" style="width:29px;height:29px;object-fit:contain;border-radius:8px;">
-          <span>SNIPE</span>
-        </a>
-        <div class="nav-links">
-          <a href="#features">Features</a>
-          <a href="#showcase">Profiles</a>
-          <a href="login.html">Log in</a>
-          <a class="nav-cta" href="signup.html">Get started</a>
+  <main>
+    <section class="hero container" id="showcase">
+      <div>
+        <div class="pill"><span class="pill-dot"></span> A profile platform built around you</div>
+        <h1>Everything about <span>you.</span><br>In one place.</h1>
+        <p class="hero-text">Build a personal page for your links, identity, badges, and everything you want people to find. Simple to share. Fully yours.</p>
+        <div class="actions">
+          <a class="primary" href="signup.html">Create your Snipe <b>→</b></a>
+          <a class="secondary" href="#features">See how it works ↓</a>
         </div>
-        <a class="mobile-cta" href="signup.html">Get started</a>
-      </nav>
-    </header>
+      </div>
 
-    <main>
-      <section class="hero-section">
-        <div class="hero-content">
-          <div class="pill"><span class="pill-dot"></span> A profile platform built around you</div>
-          <h1>Everything about<br><span>you.</span> In one place.</h1>
-          <p class="hero-subtitle">Build a personal page for your links, identity, badges, and everything you want people to find. Simple to share. Fully yours.</p>
-          <div class="hero-actions">
-            <a class="primary-btn" href="signup.html">Create your Snipe <b>→</b></a>
-            <a class="secondary-link" href="#showcase">See how it works <span>↓</span></a>
-          </div>
-          <div class="hero-note"><span>✦</span> Free to create · No clutter · Made for profiles</div>
-        </div>
-
-        <div class="hero-preview" id="showcase" aria-label="Snipe profile preview">
-          <div class="preview-glow"></div>
-          <div class="profile-card">
-            <div class="card-banner"></div>
-            <div class="card-body">
-              <div class="avatar">S</div>
-              <div class="profile-meta">
-                <div class="profile-name">Supreme<span>✓</span></div>
-                <div class="profile-handle">@supremevr</div>
-              </div>
-              <div class="profile-badges"><i title="Founder">★</i><i title="Developer">◆</i></div>
-              <p>building things that shouldn't exist.</p>
-              <div class="mini-links">
-                <div><span>↗</span> Discord</div>
-                <div><span>↗</span> GitHub</div>
-                <div><span>↗</span> YouTube</div>
-              </div>
-              <div class="profile-footer"><span>◉ 1,284 views</span><span>snipe.dedyn.io/supremevr</span></div>
+      <div class="preview">
+        <div class="preview-glow"></div>
+        <div class="profile-card">
+          <div class="profile-banner"></div>
+          <div class="profile-body">
+            <div class="profile-avatar">S</div>
+            <div class="profile-badges">
+              <div class="profile-badge" title="Founder">★</div>
+              <div class="profile-badge" title="Developer">◆</div>
+            </div>
+            <div class="profile-name">Supreme</div>
+            <div class="profile-handle">@supremevr</div>
+            <p class="profile-bio">building things that shouldn't exist.</p>
+            <div class="profile-links">
+              <div>↗ Discord</div>
+              <div>↗ GitHub</div>
+              <div>↗ YouTube</div>
             </div>
           </div>
+          <div class="stats">
+            <div class="stat"><strong>1.2K</strong><span>views</span></div>
+            <div class="stat"><strong>4</strong><span>badges</span></div>
+            <div class="stat"><strong>∞</strong><span>links</span></div>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="stats-section">
-        <div class="stat"><strong>01</strong><span>Your own profile</span></div>
-        <div class="stat"><strong>∞</strong><span>Your links, your way</span></div>
-        <div class="stat"><strong>24/7</strong><span>Always ready to share</span></div>
-      </section>
+    <section class="section container" id="features">
+      <div class="section-title">
+        <div class="kicker">WHY SNIPE</div>
+        <h2>Your identity deserves a better home.</h2>
+        <p>Everything you need to make a profile people actually remember.</p>
+      </div>
 
-      <section class="features-section" id="features">
-        <div class="section-heading">
-          <div class="section-kicker">WHY SNIPE</div>
-          <h2>Your identity deserves<br>a better home.</h2>
-          <p>Everything you need to make a profile people actually remember.</p>
+      <div class="features">
+        <article class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Make it yours</h3>
+          <p>Custom backgrounds, colors, fonts, layouts, links, and profile details let every Snipe page feel different.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon">◆</div>
+          <h3>Show your badges</h3>
+          <p>Collect profile badges and display them right beside your identity.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon">↗</div>
+          <h3>One clean link</h3>
+          <p>Share one URL and give people everything they need to find you.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="claim container">
+      <div class="claim-inner">
+        <div>
+          <div class="kicker">YOUR URL</div>
+          <h2>Claim your spot.</h2>
+          <p>Get a memorable Snipe profile URL and start building.</p>
         </div>
+        <form class="claim-form" action="signup.html" method="get">
+          <span>snipe.dedyn.io/</span>
+          <input name="username" autocomplete="off" placeholder="username" aria-label="Username">
+          <button type="submit">Claim →</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
-        <div class="feature-grid">
-          <article class="feature-card feature-wide">
-            <div class="feature-icon">✦</div>
-            <div><h3>Make it yours</h3><p>Custom backgrounds, colors, fonts, layouts, links, and profile details let every Snipe page feel different.</p></div>
-            <div class="color-strip"><span></span><span></span><span></span><span></span><span></span></div>
-          </article>
-          <article class="feature-card"><div class="feature-icon">◆</div><h3>Show your badges</h3><p>Collect profile badges and display them right beside your identity.</p></article>
-          <article class="feature-card"><div class="feature-icon">↗</div><h3>One clean link</h3><p>Share one URL and give people everything they need to find you.</p></article>
-          <article class="feature-card feature-wide"><div class="feature-icon">◎</div><div><h3>Built for real profiles</h3><p>Profile views, social links, custom links, media, and settings are backed by your Snipe account—not a static page.</p></div></article>
-        </div>
-      </section>
-
-      <section class="claim-section">
-        <div class="claim-inner">
-          <div><div class="section-kicker">YOUR URL</div><h2>Claim your spot.</h2><p>Get a memorable Snipe profile URL and start building.</p></div>
-          <form class="claim-form" action="signup.html" method="get">
-            <span>snipe.dedyn.io/</span>
-            <input name="username" autocomplete="off" placeholder="username" aria-label="Username">
-            <button type="submit">Claim →</button>
-          </form>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="brand footer-brand"><img src="assets/snipe-logo.png" alt="Snipe" style="width:24px;height:24px;object-fit:contain;border-radius:6px;"><span>SNIPE</span></div>
-      <span>© 2026 Snipe</span>
-      <span>Built for people worth remembering.</span>
-    </footer>
-  </div>
+  <footer class="footer container">
+    <div class="brand">
+      <img src="assets/snipe-logo.png" alt="Snipe logo">
+      <span>SNIPE</span>
+    </div>
+    <span>© 2026 Snipe</span>
+    <span>Built for people worth remembering.</span>
+  </footer>
 
   <script type="module" src="./js/supabase.js"></script>
 </body>
