@@ -1,21 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="icon" type="image/png" href="assets/snipe-logo.png">
-  <title>Dashboard — Snipe</title>
-  <link rel="stylesheet" href="app.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08090d"><link rel="icon" type="image/png" href="assets/snipe-logo.png">
+<title>Dashboard — Snipe</title><link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="app-nav"><div class="app-nav-inner">
-      <a class="brand" href="index.html" aria-label="Snipe home"><img src="assets/snipe-logo.png" alt="Snipe" style="width:29px;height:29px;object-fit:contain;border-radius:8px;"><span>SNIPE</span></a>
-      <nav class="app-nav-links"><a class="active" href="dashboard.html">Dashboard</a><a href="settings.html">Settings</a><a id="public-nav" href="profile.html">My profile</a></nav>
-      <div class="user-menu"><div id="nav-avatar" class="mini-avatar">?</div><button id="logout" class="logout">Log out</button></div>
-    </div></header>
-    <main class="app-main"><div class="page-head"><div><h1>Dashboard</h1><p>Your Snipe profile, at a glance.</p></div></div><div class="grid"><section class="panel"><h2>Profile overview</h2><p class="panel-desc">This is what your public identity currently looks like.</p><div class="profile-preview"><div class="dash-banner"></div><div class="dash-profile"><div id="avatar" class="dash-avatar">?</div><div id="display-name" class="dash-name">Loading…</div><div id="handle" class="dash-handle">@—</div><div id="bio" class="dash-bio">Loading your profile.</div></div></div><a id="public-link" class="public-link" href="profile.html"><span>Open public profile →</span></a></section><aside class="panel"><h2>Quick stats</h2><p class="panel-desc">Your profile activity.</p><div class="side-stat"><span>Profile views</span><strong id="views">—</strong></div><div class="side-stat"><span>Badges</span><strong id="badges">—</strong></div><div class="side-stat"><span>Member since</span><strong id="joined">—</strong></div><a class="primary-btn" style="margin-top:20px;width:100%;justify-content:center" href="settings.html">Edit profile →</a></aside></div></main>
-  </div>
-  <script type="module" src="./js/dashboard.js"></script>
-</body>
-</html>
+<div class="app-shell">
+<header class="app-nav"><div class="app-nav-inner">
+<a class="brand" href="index.html"><img src="assets/snipe-logo.png" alt="Snipe"><span>SNIPE</span></a>
+<nav class="app-nav-links"><a class="active" href="dashboard.html">Dashboard</a><a href="settings.html">Settings</a><a id="public-nav" href="profile.html">My profile</a></nav>
+<div class="user-menu"><div id="nav-avatar" class="mini-avatar">?</div><button id="logout" class="logout">Log out</button></div>
+</div></header>
+<main class="app-main dashboard-main">
+<div class="page-head"><div><div class="dash-kicker">YOUR SNIPE</div><h1>Dashboard</h1><p>Manage your public identity and see how your profile is doing.</p></div><a id="public-link-top" class="primary-btn" href="profile.html">View profile →</a></div>
+<div class="dashboard-grid">
+<section class="panel profile-panel">
+<div class="panel-top"><div><h2>Profile</h2><p class="panel-desc">Your public Snipe profile.</p></div><a href="settings.html" class="panel-link">Edit →</a></div>
+<div class="profile-preview-large">
+<div class="dash-banner"></div>
+<div class="dash-profile">
+<div id="avatar" class="dash-avatar">?</div>
+<div class="dash-identity"><div id="display-name" class="dash-name">Loading…</div><div id="handle" class="dash-handle">@—</div></div>
+</div>
+<div id="bio" class="dash-bio">Loading your profile.</div>
+<div class="profile-preview-footer"><span id="profile-status">● Profile active</span><a id="public-link" href="profile.html">Open public profile ↗</a></div>
+</div>
+</section>
+<aside class="panel stats-panel">
+<div class="panel-top"><div><h2>Overview</h2><p class="panel-desc">Your account at a glance.</p></div></div>
+<div class="metric"><span>Profile views</span><strong id="views">—</strong></div>
+<div class="metric"><span>Badges earned</span><strong id="badges">—</strong></div>
+<div class="metric"><span>Member since</span><strong id="joined">—</strong></div>
+</aside>
+</div>
+<section class="quick-actions">
+<a class="action-card" href="settings.html"><div class="action-icon">✦</div><div><strong>Customize profile</strong><span>Update your bio, links, images and identity.</span></div><b>→</b></a>
+<a id="share-card" class="action-card" href="profile.html"><div class="action-icon">↗</div><div><strong>View your public page</strong><span>See exactly what other people see.</span></div><b>→</b></a>
+</section>
+</main></div>
+<script type="module" src="./js/dashboard.js"></script>
+</body></html>
