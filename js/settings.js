@@ -13,20 +13,13 @@ if (error) throw error;
 $('username').value = profile.username || '';
 for (const key of fields) $(key).value = profile[key] || '';
 $('nav-avatar').textContent = (profile.display_name || profile.username || '?').slice(0,1).toUpperCase();
-$('public-nav').href = `profile.html?u=${encodeURIComponent(profile.username)}`;
+$('public-nav').href = profile.profile_slug ? `/${profile.profile_slug}` : `/${profile.username}`;
 
 let selectedEffect = allowedEffects.has(profile.display_name_effect) ? profile.display_name_effect : 'none';
 function updateEffectSelection() {
-  document.querySelectorAll('.effect-option').forEach(button => {
-    button.classList.toggle('active', button.dataset.effect === selectedEffect);
-  });
+  document.querySelectorAll('.effect-option').forEach(button => button.classList.toggle('active', button.dataset.effect === selectedEffect));
 }
-document.querySelectorAll('.effect-option').forEach(button => {
-  button.addEventListener('click', () => {
-    selectedEffect = button.dataset.effect;
-    updateEffectSelection();
-  });
-});
+document.querySelectorAll('.effect-option').forEach(button => button.addEventListener('click', () => { selectedEffect = button.dataset.effect; updateEffectSelection(); }));
 updateEffectSelection();
 
 function updateUsernameLimit(count) {
@@ -37,16 +30,12 @@ function updateUsernameLimit(count) {
 }
 updateUsernameLimit(profile.username_change_count);
 
-$('logout').addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  window.location.replace('index.html');
-});
+$('logout').addEventListener('click', async () => { await supabase.auth.signOut(); window.location.replace('index.html'); });
 
-async function uploadMedia(file, kind) {
+async function uploadMedia(file, kind, maxBytes) {
   if (!file) return null;
   if (!['image/png','image/jpeg','image/webp'].includes(file.type)) throw new Error(`${kind} must be a PNG, JPG, or WEBP image.`);
-  const max = kind === 'Avatar' ? 5 * 1024 * 1024 : 8 * 1024 * 1024;
-  if (file.size > max) throw new Error(`${kind} is too large.`);
+  if (file.size > maxBytes) throw new Error(`${kind} is too large.`);
   const ext = file.name.split('.').pop().toLowerCase();
   const path = `${session.user.id}/${kind.toLowerCase()}-${crypto.randomUUID()}.${ext}`;
   const { error: uploadError } = await supabase.storage.from('snipe-media').upload(path, file, { upsert:false, contentType:file.type, cacheControl:'3600' });
@@ -69,7 +58,6 @@ $('settings-form').addEventListener('submit', async event => {
 
     let finalUsername = currentUsername;
     let changesUsed = Number(profile.username_change_count || 0);
-
     if (requestedUsername.toLowerCase() !== currentUsername.toLowerCase()) {
       const { data: result, error: usernameError } = await supabase.rpc('change_username', { new_username: requestedUsername });
       if (usernameError) throw usernameError;
@@ -90,20 +78,26 @@ $('settings-form').addEventListener('submit', async event => {
       tiktok_url: $('tiktok_url').value.trim() || null
     };
 
-    for (const [selector, kind, column] of [
-      ['#avatar_file','Avatar','avatar_url'],
-      ['#banner_file','Banner','banner_url'],
-      ['#background_file','Background','background_url']
+    for (const [selector, kind, column, maxBytes] of [
+      ['#avatar_file','Avatar','avatar_url',5*1024*1024],
+      ['#banner_file','Banner','banner_url',8*1024*1024],
+      ['#background_file','Background','background_url',8*1024*1024]
     ]) {
       const file = document.querySelector(selector).files[0];
-      if (file) updates[column] = await uploadMedia(file, kind);
+      if (file) updates[column] = await uploadMedia(file, kind, maxBytes);
     }
+
+    // Keep the favicon inside the existing custom_links JSON so no new SQL column is required.
+    const currentCustomLinks = profile.custom_links && typeof profile.custom_links === 'object' ? { ...profile.custom_links } : {};
+    const faviconFile = $('#favicon_file').files[0];
+    if (faviconFile) currentCustomLinks.favicon_url = await uploadMedia(faviconFile, 'Favicon', 2*1024*1024);
+    updates.custom_links = currentCustomLinks;
 
     const { error: saveError } = await supabase.from('profiles').update(updates).eq('id', session.user.id);
     if (saveError) throw saveError;
 
     await touchActivity();
-    $('public-nav').href = `profile.html?u=${encodeURIComponent(finalUsername)}`;
+    $('public-nav').href = profile.profile_slug ? `/${profile.profile_slug}` : `/${finalUsername}`;
     status.textContent = 'Changes saved successfully.';
     setTimeout(() => window.location.reload(), 700);
   } catch (error) {
