@@ -20,6 +20,12 @@ const allowedEffects = new Set(['none','glow','rainbow','shimmer','pulse','fire'
 
 function safeImage(url) { try { return new URL(url, location.href).href; } catch { return ''; } }
 
+function applyNameEffect(element, effect) {
+  for (const name of allowedEffects) element.classList.remove(`name-effect-${name}`);
+  const cleanEffect = allowedEffects.has(effect) ? effect : 'none';
+  element.classList.add(`name-effect-${cleanEffect}`);
+}
+
 if (!requested) {
   nameEl.textContent = 'Profile not found';
   bioEl.textContent = 'No profile link was provided.';
@@ -37,8 +43,7 @@ if (!requested) {
   } else {
     document.title = `${profile.display_name || profile.username} — Snipe`;
     nameEl.textContent = profile.display_name || profile.username;
-    const effect = allowedEffects.has(profile.display_name_effect) ? profile.display_name_effect : 'none';
-    nameEl.classList.add(`name-effect-${effect}`);
+    applyNameEffect(nameEl, profile.display_name_effect);
     document.querySelector('#profile-username').textContent = `@${profile.username}`;
 
     if (profile.background_url) { const bg = safeImage(profile.background_url); if (bg) pageEl.style.backgroundImage = `url("${bg.replaceAll('"','%22')}")`; }
@@ -46,9 +51,18 @@ if (!requested) {
     else bannerEl.style.backgroundImage = 'linear-gradient(135deg,#191d22,#090b0f 58%,#161a20)';
 
     const avatar = document.querySelector('#profile-avatar');
+    avatar.replaceChildren();
     if (profile.avatar_url) {
       const src = safeImage(profile.avatar_url);
-      if (src) { const img = document.createElement('img'); img.src = src; img.alt = `${profile.display_name || profile.username} avatar`; img.loading = 'eager'; img.decoding = 'async'; avatar.replaceChildren(img); }
+      if (src) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `${profile.display_name || profile.username} avatar`;
+        img.loading = 'eager';
+        img.decoding = 'async';
+        img.draggable = false;
+        avatar.appendChild(img);
+      } else avatar.textContent = (profile.display_name || profile.username).slice(0, 1).toUpperCase();
     } else avatar.textContent = (profile.display_name || profile.username).slice(0, 1).toUpperCase();
 
     bioEl.textContent = profile.bio || '';
@@ -56,6 +70,7 @@ if (!requested) {
 
     const socials = [['Discord',profile.discord_url],['GitHub',profile.github_url],['YouTube',profile.youtube_url],['Twitter / X',profile.twitter_url],['Instagram',profile.instagram_url],['TikTok',profile.tiktok_url]];
     const links = document.querySelector('#links');
+    links.replaceChildren();
     for (const [name,url] of socials) {
       if (!url) continue;
       const a = document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent=name;
@@ -65,11 +80,12 @@ if (!requested) {
 
     const { data: badges } = await supabase.from('profile_badges').select('awarded_at,badges(name,description,icon_url)').eq('profile_id', profile.id);
     const badgeBox = document.querySelector('#profile-badges');
+    badgeBox.replaceChildren();
     for (const row of badges || []) {
       if (!row.badges) continue;
       const badge = document.createElement('span'); badge.className='profile-badge';
       const badgeName=row.badges.name||'Badge'; badge.tabIndex=0; badge.setAttribute('aria-label',badgeName);
-      if (row.badges.icon_url) { const img=document.createElement('img'); img.src=row.badges.icon_url; img.alt=''; img.loading='lazy'; img.decoding='async'; badge.appendChild(img); }
+      if (row.badges.icon_url) { const img=document.createElement('img'); img.src=row.badges.icon_url; img.alt=''; img.loading='lazy'; img.decoding='async'; img.draggable=false; badge.appendChild(img); }
       else badge.appendChild(document.createTextNode('✦'));
       const tooltip=document.createElement('span'); tooltip.textContent=badgeName; badge.appendChild(tooltip); badgeBox.appendChild(badge);
     }
