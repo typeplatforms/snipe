@@ -1,1 +1,21 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard — Snipe</title><link rel="stylesheet" href="app.css"></head><body><div class="app-shell"><header class="app-nav"><div class="app-nav-inner"><a class="brand" href="index.html"><span class="brand-mark">S</span><span>SNIPE</span></a><nav class="app-nav-links"><a class="active" href="dashboard.html">Dashboard</a><a href="settings.html">Settings</a><a id="public-nav" href="profile.html">My profile</a></nav><div class="user-menu"><div id="nav-avatar" class="mini-avatar">?</div><button id="logout" class="logout">Log out</button></div></div></header><main class="app-main"><div class="page-head"><div><h1>Dashboard</h1><p>Your Snipe profile, at a glance.</p></div></div><div class="grid"><section class="panel"><h2>Profile overview</h2><p class="panel-desc">This is what your public identity currently looks like.</p><div class="profile-preview"><div class="dash-banner"></div><div class="dash-profile"><div id="avatar" class="dash-avatar">?</div><div id="display-name" class="dash-name">Loading…</div><div id="handle" class="dash-handle">@—</div><div id="bio" class="dash-bio">Loading your profile.</div></div></div><a id="public-link" class="public-link" href="profile.html"><span>Open public profile →</span></a></section><aside class="panel"><h2>Quick stats</h2><p class="panel-desc">Your profile activity.</p><div class="side-stat"><span>Profile views</span><strong id="views">—</strong></div><div class="side-stat"><span>Badges</span><strong id="badges">—</strong></div><div class="side-stat"><span>Member since</span><strong id="joined">—</strong></div><a class="primary-btn" style="margin-top:20px;width:100%;justify-content:center" href="settings.html">Edit profile →</a></aside></div></main></div><script type="module" src="./js/dashboard.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/png" href="assets/snipe-logo.png">
+  <title>Dashboard — Snipe</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-nav"><div class="app-nav-inner">
+      <a class="brand" href="index.html" aria-label="Snipe home"><img src="assets/snipe-logo.png" alt="Snipe" style="width:29px;height:29px;object-fit:contain;border-radius:8px;"><span>SNIPE</span></a>
+      <nav class="app-nav-links"><a class="active" href="dashboard.html">Dashboard</a><a href="settings.html">Settings</a><a id="public-nav" href="profile.html">My profile</a></nav>
+      <div class="user-menu"><div id="nav-avatar" class="mini-avatar">?</div><button id="logout" class="logout">Log out</button></div>
+    </div></header>
+    <main class="app-main"><div class="page-head"><div><h1>Dashboard</h1><p>Your Snipe profile, at a glance.</p></div></div><div class="grid"><section class="panel"><h2>Profile overview</h2><p class="panel-desc">This is what your public identity currently looks like.</p><div class="profile-preview"><div class="dash-banner"></div><div class="dash-profile"><div id="avatar" class="dash-avatar">?</div><div id="display-name" class="dash-name">Loading…</div><div id="handle" class="dash-handle">@—</div><div id="bio" class="dash-bio">Loading your profile.</div></div></div><a id="public-link" class="public-link" href="profile.html"><span>Open public profile →</span></a></section><aside class="panel"><h2>Quick stats</h2><p class="panel-desc">Your profile activity.</p><div class="side-stat"><span>Profile views</span><strong id="views">—</strong></div><div class="side-stat"><span>Badges</span><strong id="badges">—</strong></div><div class="side-stat"><span>Member since</span><strong id="joined">—</strong></div><a class="primary-btn" style="margin-top:20px;width:100%;justify-content:center" href="settings.html">Edit profile →</a></aside></div></main>
+  </div>
+  <script type="module" src="./js/dashboard.js"></script>
+</body>
+</html>
