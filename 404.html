@@ -3,22 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="icon" type="image/png" href="/assets/snipe-logo.png">
+  <meta name="robots" content="noindex">
   <title>Snipe Profile</title>
-  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/app.css?v=profile3">
   <style>
     html,body{min-height:100%;margin:0}
-    body{background:#07080b;color:#f5f6f8;font-family:"DM Sans",sans-serif}
+    body{background:#07080b;color:#f5f6f8;font-family:'DM Sans',sans-serif}
     .profile-page{min-height:100vh;display:grid;place-items:center;padding:40px 20px;position:relative;overflow:hidden;background:#07080b center/cover no-repeat;background-attachment:fixed}
     .profile-page::before{content:"";position:absolute;inset:0;background:rgba(7,8,11,.58);backdrop-filter:blur(2px);pointer-events:none}
     .profile-card-public{position:relative;z-index:1;width:min(560px,100%);overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),rgba(11,13,17,.94);box-shadow:0 35px 100px rgba(0,0,0,.55);text-align:center}
     .profile-banner-public{height:150px;width:100%;background:#15181e center/cover no-repeat;position:relative}
     .profile-banner-public::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(11,13,17,.9) 100%)}
     .profile-content{position:relative;padding:0 34px 34px}
-    .profile-brand{display:flex;align-items:center;justify-content:center;gap:9px;margin:0 0 18px;color:#f5f6f8;font:700 15px 'Space Grotesk',sans-serif;letter-spacing:.16em;text-decoration:none}
-    .profile-brand img{width:32px;height:32px;object-fit:contain;border-radius:8px}
-    .public-avatar{width:104px;height:104px;margin:-52px auto 0;position:relative;z-index:2;display:grid;place-items:center;border:5px solid #0b0d11;border-radius:50%;background:#15181e;color:#d7ff4f;font:700 32px 'Space Grotesk',sans-serif;overflow:hidden;box-shadow:0 10px 35px rgba(0,0,0,.4)}
-    .public-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .public-avatar{width:104px;height:104px;margin:-52px auto 0;position:relative;z-index:2;display:grid;place-items:center;box-sizing:border-box;border:5px solid #0b0d11;border-radius:50%;background:#15181e;color:#d7ff4f;font:700 32px 'Space Grotesk',sans-serif;overflow:hidden;isolation:isolate;clip-path:circle(50%);-webkit-clip-path:circle(50%);box-shadow:0 10px 35px rgba(0,0,0,.4)}
+    .public-avatar img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;max-height:100%;min-width:0;min-height:0;box-sizing:border-box;object-fit:cover;object-position:center;display:block;margin:0;border:0;border-radius:50%;overflow:hidden;clip-path:circle(50%);-webkit-clip-path:circle(50%);pointer-events:none;user-select:none;-webkit-user-drag:none}
     #profile-name{font:700 38px 'Space Grotesk',sans-serif;letter-spacing:-.055em;margin:17px 0 3px;color:#f5f6f8}
     #profile-username{color:#777d88;font-size:12px}
     #profile-badges{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:7px;margin:18px 0}
@@ -31,8 +29,7 @@
     #links a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;box-sizing:border-box;transition:transform .18s ease,border-color .18s ease,background .18s ease;text-decoration:none}
     #links a:hover{transform:translateY(-2px);border-color:rgba(215,255,79,.22)!important;background:rgba(215,255,79,.035)!important;color:#f5f6f8!important}
     #views{margin-top:22px;color:#656b76;font-size:10px}
-    .profile-back{display:inline-block;margin-top:24px;color:#777d88;font-size:11px;text-decoration:none;transition:color .18s ease}.profile-back:hover{color:#d7ff4f}
-    @media(max-width:600px){.profile-page{padding:20px 12px;background-attachment:scroll}.profile-content{padding:0 18px 26px}.profile-card-public{border-radius:18px}.profile-banner-public{height:125px}#profile-name{font-size:31px}}
+    @media(max-width:600px){.profile-page{padding:20px 12px;background-attachment:scroll}.profile-content{padding:0 18px 26px}.profile-card-public{border-radius:18px}.profile-banner-public{height:125px}#profile-name{font-size:31px}.public-avatar{width:92px;height:92px;margin-top:-46px}}
   </style>
 </head>
 <body>
@@ -40,7 +37,6 @@
     <section class="profile-card-public">
       <div id="profile-banner" class="profile-banner-public"></div>
       <div class="profile-content">
-        <a class="profile-brand" href="/" aria-label="Snipe home"><img src="/assets/snipe-logo.png" alt="Snipe"><span>SNIPE</span></a>
         <div id="profile-avatar" class="public-avatar">?</div>
         <h1 id="profile-name">Loading…</h1>
         <div id="profile-username">@—</div>
@@ -48,10 +44,9 @@
         <p id="profile-bio">Loading profile…</p>
         <div id="links"></div>
         <div id="views">— views</div>
-        <a href="/" class="profile-back">← Snipe</a>
       </div>
     </section>
   </main>
-  <script type="module" src="/js/profile.js"></script>
+  <script type="module" src="/js/profile.js?v=profile3"></script>
 </body>
 </html>
