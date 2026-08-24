@@ -9,7 +9,7 @@ if (!requested) {
   requested = parts.length ? parts[parts.length - 1] : null;
 }
 
-const reserved = new Set(['index.html','profile.html','login.html','signup.html','dashboard.html','settings.html','forgot-password.html','reset-password.html','404.html','assets','js','css','snipe']);
+const reserved = new Set(['index','index.html','profile','profile.html','login','login.html','signup','signup.html','dashboard','dashboard.html','settings','settings.html','forgot-password','forgot-password.html','reset-password','reset-password.html','404','404.html','assets','js','css','snipe']);
 if (requested && reserved.has(requested.toLowerCase())) requested = null;
 
 const nameEl = document.querySelector('#profile-name');
@@ -30,16 +30,24 @@ if (!requested) {
   nameEl.textContent = 'Profile not found';
   bioEl.textContent = 'No profile link was provided.';
 } else {
+  // The username is only a legacy alias. The canonical public URL is always profile_slug.
   const slugResult = await supabase.from('profiles').select('*').ilike('profile_slug', requested).maybeSingle();
   let profile = slugResult.data;
+  let matchedByUsername = false;
+
   if (!profile) {
     const fallback = await supabase.from('profiles').select('*').ilike('username', requested).maybeSingle();
     profile = fallback.data;
+    matchedByUsername = !!profile;
   }
 
   if (!profile) {
     nameEl.textContent = 'Profile not found';
     bioEl.textContent = 'This Snipe profile does not exist.';
+  } else if (matchedByUsername && profile.profile_slug && profile.profile_slug.toLowerCase() !== requested.toLowerCase()) {
+    // Old username URLs permanently point to the user's current custom URL.
+    const canonicalPath = `/${encodeURIComponent(profile.profile_slug)}`;
+    if (location.pathname !== canonicalPath) location.replace(canonicalPath);
   } else {
     document.title = `${profile.display_name || profile.username} — Snipe`;
     nameEl.textContent = profile.display_name || profile.username;
