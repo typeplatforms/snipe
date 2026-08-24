@@ -1,1 +1,37 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Create account — Snipe</title><link rel="stylesheet" href="auth.css"></head><body><main class="auth-shell"><div class="auth-bg"></div><section class="auth-card"><div class="auth-top"><a class="brand" href="index.html"><span class="brand-mark">S</span><span>SNIPE</span></a><a class="auth-back" href="index.html">← Home</a></div><h1 class="auth-title">Claim your Snipe.</h1><p class="auth-subtitle">Create your account and get your own profile.</p><div id="message" class="auth-message"></div><form id="signup-form"><label class="field"><span>Username</span><input id="username" name="username" minlength="3" maxlength="32" pattern="[A-Za-z0-9_]+" autocomplete="username" required placeholder="your_username"></label><label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label class="field"><span>Password</span><input id="password" type="password" minlength="8" autocomplete="new-password" required placeholder="At least 8 characters"></label><div class="password-note">Your username can use letters, numbers, and underscores.</div><label class="checkline"><input id="terms" type="checkbox" required><span>I understand that Snipe accounts are subject to the platform rules and inactivity policy.</span></label><button id="submit" class="auth-submit" type="submit">Create account</button></form><div class="auth-switch">Already have an account? <a href="login.html">Log in</a></div></section></main><script type="module" src="./js/signup.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/png" href="assets/snipe-logo.png">
+  <title>Create account — Snipe</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <div class="auth-bg"></div>
+    <section class="auth-card">
+      <div class="auth-top">
+        <a class="brand" href="index.html" aria-label="Snipe home">
+          <img src="assets/snipe-logo.png" alt="Snipe" style="width:29px;height:29px;object-fit:contain;border-radius:8px;">
+          <span>SNIPE</span>
+        </a>
+        <a class="auth-back" href="index.html">← Home</a>
+      </div>
+      <h1 class="auth-title">Claim your Snipe.</h1>
+      <p class="auth-subtitle">Create your account and get your own profile.</p>
+      <div id="message" class="auth-message"></div>
+      <form id="signup-form">
+        <label class="field"><span>Username</span><input id="username" name="username" minlength="3" maxlength="32" pattern="[A-Za-z0-9_]+" autocomplete="username" required placeholder="your_username"></label>
+        <label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label class="field"><span>Password</span><input id="password" type="password" minlength="8" autocomplete="new-password" required placeholder="At least 8 characters"></label>
+        <div class="password-note">Your username can use letters, numbers, and underscores.</div>
+        <label class="checkline"><input id="terms" type="checkbox" required><span>I understand that Snipe accounts are subject to the platform rules and inactivity policy.</span></label>
+        <button id="submit" class="auth-submit" type="submit">Create account</button>
+      </form>
+      <div class="auth-switch">Already have an account? <a href="login.html">Log in</a></div>
+    </section>
+  </main>
+  <script type="module" src="./js/signup.js"></script>
+</body>
+</html>
